@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Category API (Sans Authentification)</title>
+    <script>
+        // URL de base de l'API
+        const API_BASE_URL = 'http://localhost:8080/api';
+
+        // Fonction pour créer une catégorie
+        async function createCategory() {
+            const categoryName = document.getElementById("categoryName").value;
+
+            const requestBody = {
+                name: categoryName
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/category`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                const data = await response.json();
+                document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Fonction pour récupérer les catégories d'un restaurant
+        async function getRestaurantCategory() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/category/restaurant`, {
+                    method: 'GET'
+                });
+                const data = await response.json();
+                document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Test Category API (Sans Authentification)</h1>
+
+<div>
+    <h3>Créer une catégorie</h3>
+    <label>Nom de la catégorie: <input type="text" id="categoryName" /></label><br>
+    <button onclick="createCategory()">Créer</button>
+</div>
+
+<div>
+    <h3>Afficher les catégories du restaurant</h3>
+    <button onclick="getRestaurantCategory()">Voir les catégories</button>
+</div>
+
+<pre id="output"></pre>
+</body>
+</html>
